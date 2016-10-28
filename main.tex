@@ -10,8 +10,6 @@
 \usepackage[toc,page]{appendix}
 
 %citation
-%\usepackage[backend=bibtex]{biblatex}
-\bibliography{openbrain}
 %
 
 % tikz and associated macros
@@ -25,6 +23,9 @@
 \tikzset{snake it/.style={decorate, decoration=snake}}
 %
 %
+\usepackage[backend=bibtex]{biblatex}
+\bibliography{main} 
+
 
 % math
 \usepackage{amsthm}
@@ -156,9 +157,9 @@ Formally, we model a conversation as an \emph{environment}, which is a Markov de
 
 Depicted in Figure (\textbf{TODO}) we seperate the approximation of an optimal policy $\pi$ into three components: dialogue representation, internal knowledge representation, as mentioned information lookup.
 \begin{enumerate}
-\item Dialogue representation is an embedding $\phi: \mathfrak{T} \to \scripts = \mathbb{R}^n$ from dialogue text into some suitable vector representation of semantics conditioned on context. Respecting that this task is still an active area of research, we will model $\phi$ and its inverse by experimenting with a variety different approaches such as thought vectors \textbf{(TODO CITE THOUGHT VECTORS)}, sparse distributed representations of syntax trees \textbf{(TODO CITE http://jmlr.org/proceedings/papers/v37/yogatama15.pdf)}, and others (\textbf{HELP WITH ENGLISH)}.  
+\item Dialogue representation is an embedding $\phi: \mathfrak{T} \to \scripts = \mathbb{R}^n$ from dialogue text into some suitable vector representation of semantics conditioned on context. Respecting that this task is still an active area of research, we will model $\phi$ and its inverse by experimenting with a variety different approaches such as thought vectors \cite{NIPS2015_5950}, sparse distributed representations of syntax trees \cite{DBLP:journals/corr/YogatamaFDS14}, and others (\textbf{HELP WITH ENGLISH)}.  
 
-\item Our requirement that $\pi$ activeley learn, manipulate, and act on an internal episodic knowledge representation of its current conversation, is analygous to the problem of one-shot learning. Therefore we approximate an optimal $\pi$ using a deep differentiable neural computer (DNC) otherwise known as memory augmented network as motivated by the results of \textbf{(TODO CITE One Shot Learning using Memory Augmented Networks.)}. 
+\item Our requirement that $\pi$ activeley learn, manipulate, and act on an internal episodic knowledge representation of its current conversation, is analygous to the problem of one-shot learning. Therefore we approximate an optimal $\pi$ using a deep differentiable neural computer (DNC)\cite{graves2016hybrid}\cite{DBLP:journals/corr/GravesWD14} otherwise known as memory augmented network as motivated by the results of (\citeauthor{DBLP:journals/corr/SantoroBBWL16}, 2016). 
 
 In its simplest form the DNC is a map $\scriptn: (s_t, r_t) \mapsto (a_t, c_t, w_t)$ where  $r_t, w_t$ are the inputs and ouputs from \emph{read} and \emph{write} heads respectively. At every time step $\scriptn$ writes to an internal memory matrix $M_t$ at a specific address as specified by the controller output $c_t$. The DNN representation of $\scriptn$ will be implimented using a combination of FC and LSTM layers so as to provide $\pi$ with the ability to maintain an tempoorally conditioned representation of state. As per the training regime to be specified later, we will conditon the DNC to use the its memory augmentation to store an internal representation of facts learned during the course of a conversational episode in $E$.
 
@@ -185,8 +186,7 @@ The principle idea behind inverse reinforcement learning is that behavioral clon
 
 In the context of the social bot, learning to communicate by understanding the forces which govern human level conversation as opposed to mimicking the conversation itself has immediate and fundamental benefits which have not yet been utilized in natural language processing. Therefore we propose the the following training regime for our model.
 
-%\printbibliography
+\printbibliography
 
-%\input{appendices}
 
 \end{document}
