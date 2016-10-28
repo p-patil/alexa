@@ -162,7 +162,16 @@ Depicted in Figure (\textbf{TODO}) we seperate the approximation of an optimal p
 
 In its simplest form the DNC is a map $\scriptn: (s_t, r_t) \mapsto (a_t, c_t, w_t)$ where  $r_t, w_t$ are the inputs and ouputs from \emph{read} and \emph{write} heads respectively. At every time step $\scriptn$ writes to an internal memory matrix $M_t$ at a specific address as specified by the controller output $c_t$. The DNN representation of $\scriptn$ will be implimented using a combination of FC and LSTM layers so as to provide $\pi$ with the ability to maintain an tempoorally conditioned representation of state. As per the training regime to be specified later, we will conditon the DNC to use the its memory augmentation to store an internal representation of facts learned during the course of a conversational episode in $E$.
 
-\item
+\item Lastly, we describe a novel approach to external information lookup which is central to the social bot's ability to communicate details about popular topics. We define a set of documents $\scriptd \subset \mathfrak{T}$ and assume $\scriptd$ is \emph{locally} homeomorphic to some linear manifold $\Omega \subset \mathbb{R}^m$. Then let $\psi: \scriptd \to \Omega$ be that embedding. 
+
+We wish to agument $\pi$ with the capability to request external information in a format compatible with its internal knowledge representation. Thus we add to $\scriptn$ a query output output $q_t \in \Omega.$ Procedurally we find the nearest document in $\Omega$, say $d_t$, and then use the text of the document as dialogue input into $\scriptn$ via $\phi$; that is,
+\begin{equation*}
+  \begin{tikzcd} 
+    & \scriptd \subset \mathfrak{T} \arrow{ld}[above]{\phi} & \\
+    \scripts \arrow{rr}{\scriptn} & & \Omega \arrow{lu}[above]{\psi^{-1}}
+  \end{tikzcd}
+\end{equation*}
+Requiring that $\pi$ only learn which class of documents are useful for responding in an engaging fashion is a much milder condition than assuming that $\scriptn$ will encode the details of every document in $\scriptd$. This novel approach to information lookup primes the memory of $\scrtiptn$, $M_t$ so that the details of a particular topic of discussion are at hand during a  episode, much in the same way that episodic conversational details are likewise written to $M_t$.
 \end{enumerate}
 
 
@@ -171,11 +180,10 @@ In its simplest form the DNC is a map $\scriptn: (s_t, r_t) \mapsto (a_t, c_t, w
 With the core architectural components of the model developed, we draw from a state of the art development in RL, inverse reinforcement learning, to impart natural and expert level conversational skill on the Social Bot. 
 
 
-The principle idea behind inverse reinforcement learning is that behavioral cloning is limited to a biased distribution of only expert examples; that is, if the social bot’s model is trained to exactly replicate a human level conversationalist response to different dialogues, then its ability to extrapolate beyond that known set of dialogues is unstable due to the severe nonlinearity of the model itself. In answer to this, inverse reinforcement learning attempts to infer the reward function of the agent being cloned. Knowing the reward function which an expert policy maximizes across a variety of states allows that policy to be cloned in a robust and dynamical fashion independent of the particular states in which it has acted; the cloned policy learns not about the particular examples to which it is tuned, but about the general principles which govern the expert policy.
+The principle idea behind inverse reinforcement learning is that behavioral cloning is limited to a biased distribution of only expert examples; that is, if the social bot’s model is trained to exactly replicate a human level conversationalist's response to different dialogues, then its ability to extrapolate beyond that known set of dialogues is unstable due to the severe nonlinearity of the model itself. In answer to this, inverse reinforcement learning attempts to infer the reward function of the agent being cloned. Knowing the reward function which an expert policy maximizes across a variety of states allows that policy to be cloned in a robust and dynamical fashion independent of the particular states in which it has acted; the cloned policy learns not about the particular examples to which it is tuned, but about the general principles which govern the expert policy.
 
 
 In the context of the social bot, learning to communicate by understanding the forces which govern human level conversation as opposed to mimicking the conversation itself has immediate and fundamental benefits which have not yet been utilized in natural language processing. Therefore we propose the the following training regime for our model.
-
 
 %\printbibliography
 
