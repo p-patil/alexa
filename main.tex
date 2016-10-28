@@ -1,7 +1,8 @@
 % In your .tex file
 
 \documentclass{article} % For LaTeX2e
-\usepackage{nips15submit_e,times}
+\usepackage{icml2015} 
+
 \usepackage{xparse}
 
 \usepackage{hyperref}
@@ -140,16 +141,29 @@
 \author{William Guss, Phillip Kuznetzov, James Bartlett, Piyush Patell\\
 Machine Learning at Berkeley\\
 \{wguss, philkuz, james.bartlett, PIYUSH PO PO W\}@berkeley.edu}
-\nipsfinalcopy % Uncomment for camera-ready version
 
 \begin{document}
 
 \maketitle
 
-\section{Introduction}
-In accordance with our vision, in this document, we will propose a radically different architectural approach to learning generative models of human-level conversation. The primary motivation behind the following architecture is that conversation can be modeled as a game in which two players attempt to maximize a mutuakl engangement reward under a minimum information theoretic constraint. In the framework of reinforcement learning, we can view the Social Bot as an agent, $\pi$, hereafter referred to as the conversationalist, whose environment is the conversation itself. An additional constraint on $\pi$ is that of one-shot learning, the ability to work with and engage details pertinent to the conversation, drawing from a model free source of external information, is essential to achieving human-level communication. Under this paradigm, we develop the architecture of the Alexa Social Bot by proposing a novel procedure for semantic information internalization via document embeddings in the regime of deep reinforcement learning with memory augmented metalearning.
+\begin{abstract}
+In accordance with our vision, in this document, we will propose a radically different architectural approach to learning generative models of human-level conversation. The primary motivation behind the following architecture is that conversation can be modeled as a game in which two players attempt to maximize a mutuakl engangement reward under a minimum information theoretic constraint. In the framework of reinforcement learning, we can view the Social Bot as an agent, $\pi$, hereafter referred to as the conversationalist, whose environment is the conversation itself. An additional constraint on $\pi$ is that of one-shot learning, the ability to work with and engage details pertinent to the conversation, drawing from a model free source of external information. Under this paradigm, we develop the architecture of the Alexa Social Bot by proposing a novel procedure for information lookup and internalization via document embeddings in the regime of deep reinforcement learning with memory augmented metalearning. (\textbf{TODO EDIT THE SHIT OUT OF THIS.})
+\end{abstract}
 
 \section{Model}
+
+Formally, we model a conversation as an \emph{environment}, which is a Markov decision process, generally represented as a tuple $E=(\scripts, \scripta, \scriptr, T, r)$ where $\scripts$ is the statespace, $\scripta$ is the action space, $\scriptr$ is the reward space, and $T, r$ are the transition and reward functions respectively\footnote{For a high level overview of the MDP learnign set up, the reader is referred to \textbf{ TODO: insert reference}}. Given an environment, a (deterministic) agent is a map $\pi: \scripts \to \scripta$ which takes actions conditioned on state space. In the context of a \emph{conversational environment}, the state space is some featurized of the dialogue produced by the other party (the user) with whom Alexa communicates. Coorespondingly the action space is the dialogue that Alexa produces in response. As aforementioned, a conversationalist is rewarded under $r$ for maximizing engagement constrained to a minimal information theoretic throughput. Given the difficulty of defining such a function, we will learn $r$ based on actual conversation as depicted in Section 3; thus we suppose that $r$ is well defined.
+
+Depicted in Figure (\textbf{TODO}) we seperate the approximation of an optimal policy $\pi$ into three components: dialogue representation, internal knowledge representation, as mentioned information lookup.
+\begin{enumerate}
+\item Dialogue representation is an embedding $\phi: \mathfrak{T} \to \scripts = \mathbb{R}^n$ from dialogue text into some suitable vector representation of semantics conditioned on context. Respecting that this task is still an active area of research, we will model $\phi$ and its inverse by experimenting with a variety different approaches such as thought vectors \textbf{(TODO CITE THOUGHT VECTORS)}, sparse distributed representations of syntax trees \textbf{(TODO CITE http://jmlr.org/proceedings/papers/v37/yogatama15.pdf)}, and others (\textbf{HELP WITH ENGLISH)}.  
+
+\item Our requirement that $\pi$ activeley learn, manipulate, and act on an internal episodic knowledge representation of its current conversation, is analygous to the problem of one-shot learning. Therefore we approximate an optimal $\pi$ using a deep differentiable neural computer (DNC) otherwise known as memory augmented network as motivated by the results of \textbf{(TODO CITE One Shot Learning using Memory Augmented Networks.)}. 
+
+In its simplest form the DNC is a map $\scriptn: (s_t, r_t) \mapsto (a_t, c_t, w_t)$ where  $r_t, w_t$ are the inputs and ouputs from \emph{read} and \emph{write} heads respectively. At every time step $\scriptn$ writes to an internal memory matrix $M_t$ at a specific address as specified by the controller output $c_t$. The DNN representation of $\scriptn$ will be implimented using a combination of FC and LSTM layers so as to provide $\pi$ with the ability to maintain an tempoorally conditioned representation of state. As per the training regime to be specified later, we will conditon the DNC to use the its memory augmentation to store an internal representation of facts learned during the course of a conversational episode in $E$.
+
+\item
+\end{enumerate}
 
 
 
