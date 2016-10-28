@@ -135,17 +135,29 @@
 \usepackage{regexpatch}
 %end to notes
 
-\title{Machine Learning at Berkeley: Alexa Technical Architecture}
+\title{Alexa Project Technical Architecture}
 
-
+\author{William Guss, Phillip Kuznetzov, James Bartlett, Piyush Patell\\
+Machine Learning at Berkeley\\
+\{wguss, philkuz, james.bartlett, PIYUSH PO PO W\}@berkeley.edu}
 \nipsfinalcopy % Uncomment for camera-ready version
 
 \begin{document}
 
-
 \maketitle
 
+In this document we will introduce the model and learnin paradigm for the Alexa project.
+\section{Model}
 
+
+\section{Training}
+With the core architectural components of the model developed, we draw from a state of the art development in RL, inverse reinforcement learning, to impart natural and expert level conversational skill on the Social Bot. 
+
+
+The principle idea behind inverse reinforcement learning is that behavioral cloning is limited to a biased distribution of only expert examples; that is, if the social bot’s model is trained to exactly replicate a human level conversationalist response to different dialogues, then its ability to extrapolate beyond that known set of dialogues is unstable due to the severe nonlinearity of the model itself. In answer to this, inverse reinforcement learning attempts to infer the reward function of the agent being cloned. Knowing the reward function which an expert policy maximizes across a variety of states allows that policy to be cloned in a robust and dynamical fashion independent of the particular states in which it has acted; the cloned policy learns not about the particular examples to which it is tuned, but about the general principles which govern the expert policy.
+
+
+In the context of the social bot, learning to communicate by understanding the forces which govern human level conversation as opposed to mimicking the conversation itself has immediate and fundamental benefits which have not yet been utilized in natural language processing. Therefore we propose the the following training regime for our model.
 
 
 %\printbibliography
