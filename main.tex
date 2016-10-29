@@ -194,21 +194,21 @@ The principle idea behind inverse reinforcement learning is that behavioral clon
 
 In the context of the social bot, learning to communicate by understanding the forces which govern human level conversation as opposed to mimicking the conversation itself has immediate and fundamental benefits which have not yet been utilized in natural language processing. Therefore we propose the following training regime for our model.
 
-The training paradigm takes a speaker's speech pattern and learns the reward function through inverse reinforcement learning. With the now extracted reward function, we can now train a critic network to estimate the Q value by the paradigm proposed in DDPG \textbf{CITE DDPG}. 
+The training paradigm takes a speaker's speech pattern and learns the reward function through inverse reinforcement learning. With the now extracted reward function, we can now train a critic network to estimate the Q value by the paradigm proposed in DDPG \textbf{CITE DDPG}.
 
-We then take the conversation corpus
-Conversation Corpus
-News Interviews
-Articles and corresponding videos by news anchors
-Late Night Shows
-Engagement
-Label uniform sparse subset of some conversation data according to engagement, termination, depth
-Train a “critic”/adverserial  in the flavor DDPG or DCGAN
-Knowledge Retrieval
-News Interviews:
-Create another reinforcement learning regime where the actions are a document code, freezing the conversational portion of the network. Then perform a reverse lookup (using the nearest document in the embedded space) and feed that into the document read heads of the network.,
-Again reward the agent for correctly satisfying the reward function that was inverted from the conversations. From `(1.b)
-Conversation corpora
+% We then take the conversation corpus
+% Conversation Corpus
+% News Interviews
+% Articles and corresponding videos by news anchors
+% Late Night Shows
+% Engagement
+% Label uniform sparse subset of some conversation data according to engagement, termination, depth
+% Train a “critic”/adverserial  in the flavor DDPG or DCGAN
+% Knowledge Retrieval
+% News Interviews:
+% Create another reinforcement learning regime where the actions are a document code, freezing the conversational portion of the network. Then perform a reverse lookup (using the nearest document in the embedded space) and feed that into the document read heads of the network.,
+% Again reward the agent for correctly satisfying the reward function that was inverted from the conversations. From `(1.b)
+% Conversation corpora
 
 
 \printbibliography
