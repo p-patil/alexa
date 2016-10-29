@@ -17,6 +17,10 @@
 \usepackage{tikz-cd}
 
 \usepackage{pgfplots}
+\def\layersep{2cm}
+\def\nodesep{0.25cm}
+\newcommand*{\Scale}[2][4]{\scalebox{#1}{$#2$}}%
+\newcommand*{\Resize}[2]{\resizebox{#1}{!}{$#2$}}%
 \newcommand\sep{1.9cm}
 \newcommand\height{0.9cm}
 \usetikzlibrary{decorations.pathmorphing, backgrounds}
@@ -153,6 +157,11 @@ In accordance with our vision, in this document, we will propose a radically dif
 
 \section{Model}
 
+\begin{figure*}
+	\include{will}
+  \caption{This is a tiger.}
+\end{figure*}
+
 Formally, we model a conversation as an \emph{environment}, which is a Markov decision process, generally represented as a tuple $E=(\scripts, \scripta, \scriptr, T, r)$ where $\scripts$ is the statespace, $\scripta$ is the action space, $\scriptr$ is the reward space, and $T, r$ are the transition and reward functions respectively\footnote{For a high level overview of the MDP learnign set up, the reader is referred to \textbf{ TODO: insert reference}}. Given an environment, a (deterministic) agent is a map $\pi: \scripts \to \scripta$ which takes actions conditioned on state space. In the context of a \emph{conversational environment}, the state space is some featurized of the dialogue produced by the other party (the user) with whom Alexa communicates. Coorespondingly the action space is the dialogue that Alexa produces in response. As aforementioned, a conversationalist is rewarded under $r$ for maximizing engagement constrained to a minimal information theoretic throughput. Given the difficulty of defining such a function, we will learn $r$ based on actual conversation as depicted in Section 3; thus we suppose that $r$ is well defined.
 
 Depicted in Figure (\textbf{TODO}) we seperate the approximation of an optimal policy $\pi$ into three components: dialogue representation, internal knowledge representation, as mentioned information lookup.
@@ -163,7 +172,7 @@ Depicted in Figure (\textbf{TODO}) we seperate the approximation of an optimal p
 
 In its simplest form the DNC is a map $\scriptn: (s_t, r_t) \mapsto (a_t, c_t, w_t)$ where  $r_t, w_t$ are the inputs and ouputs from \emph{read} and \emph{write} heads respectively. At every time step $\scriptn$ writes to an internal memory matrix $M_t$ at a specific address as specified by the controller output $c_t$. The DNN representation of $\scriptn$ will be implimented using a combination of FC and LSTM layers so as to provide $\pi$ with the ability to maintain an tempoorally conditioned representation of state. As per the training regime to be specified later, we will conditon the DNC to use the its memory augmentation to store an internal representation of facts learned during the course of a conversational episode in $E$.
 
-\item Lastly, we describe a novel approach to external information lookup which is central to the social bot's ability to communicate details about popular topics. We define a set of documents $\scriptd \subset \mathfrak{T}$ and assume $\scriptd$ is \emph{locally} homeomorphic to some linear manifold $\Omega \subset \mathbb{R}^m$. Then let $\psi: \scriptd \to \Omega$ be that embedding. 
+\item Lastly, we describe a novel approach to external information lookup which is central to the social bot's ability to communicate details about popular topics. We define a set of documents $\scriptd \subset \mathfrak{T}$ and assume $\scriptd$ is \emph{locally} homeomorphic to some linear manifold $\Omega \subset \mathbb{R}^m$. Then let $\psi: \scriptd \to \Omega$ be that embedding. Finding such an embedding is a recent but promising development in NLP, with application to unsupervise search\cite{DBLP:journals/corr/DaiOL15}.
 
 We wish to agument $\pi$ with the capability to request external information in a format compatible with its internal knowledge representation. Thus we add to $\scriptn$ a query output output $q_t \in \Omega.$ Procedurally we find the nearest document in $\Omega$, say $d_t$, and then use the text of the document as dialogue input into $\scriptn$ via $\phi$; that is,
 \begin{equation*}
@@ -176,9 +185,8 @@ Requiring that $\pi$ only learn which class of documents are useful for respondi
 \end{enumerate}
 
 
-
 \section{Training}
-With the core architectural components of the model developed, we draw from a state of the art development in RL, inverse reinforcement learning, to impart natural and expert level conversational skill on the Social Bot. 
+With the core architectural components of the model developed, we draw from a state of the art development in RL, inverse reinforcement learning\cite{ng2000algorithms}, to impart natural and expert level conversational skill on the Social Bot. 
 
 
 The principle idea behind inverse reinforcement learning is that behavioral cloning is limited to a biased distribution of only expert examples; that is, if the social bot’s model is trained to exactly replicate a human level conversationalist's response to different dialogues, then its ability to extrapolate beyond that known set of dialogues is unstable due to the severe nonlinearity of the model itself. In answer to this, inverse reinforcement learning attempts to infer the reward function of the agent being cloned. Knowing the reward function which an expert policy maximizes across a variety of states allows that policy to be cloned in a robust and dynamical fashion independent of the particular states in which it has acted; the cloned policy learns not about the particular examples to which it is tuned, but about the general principles which govern the expert policy.
