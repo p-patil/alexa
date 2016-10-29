@@ -48,8 +48,8 @@
 \newtheorem{conjecture}[theorem]{Conjecture}
 \newtheorem{axiom}[theorem]{Axiom}
 
-\numberwithin{equation}{subsection}
-\numberwithin{theorem}{subsection}
+% \numberwithin{equation}{subsection}
+% \numberwithin{theorem}{subsection}
 
 \DeclareSymbolFont{cmlargesymbols}{OMX}{cmex}{m}{n}
 \let\sumop\relax
@@ -141,29 +141,34 @@
 \usepackage{regexpatch}
 %end to notes
 
-\title{Alexa Project Technical Architecture}
-
-\author{William Guss, Phillip Kuznetzov, James Bartlett, Piyush Patell\\
-Machine Learning at Berkeley\\
-\{wguss, philkuz, james.bartlett, PIYUSH PO PO W\}@berkeley.edu}
+% \title{Alexa Project Technical Architecture}
+%
+% \author{William Guss, Phillip Kuznetzov, James Bartlett, Piyush Patell\\
+% Machine Learning at Berkeley\\
+% \{wguss, philkuz, james.bartlett, PIYUSH PO PO W\}@berkeley.edu}
 
 \begin{document}
-
+% \maketitle
 
 \begin{abstract}
 In accordance with our vision, in this document, we will propose a radically different architectural approach to learning generative models of human-level conversation. The primary motivation behind the following architecture is that conversation can be modeled as a game in which two players attempt to maximize a mutuakl engangement reward under a minimum information theoretic constraint. In the framework of reinforcement learning, we can view the Social Bot as an agent, $\pi$, hereafter referred to as the conversationalist, whose environment is the conversation itself. An additional constraint on $\pi$ is that of one-shot learning, the ability to work with and engage details pertinent to the conversation, drawing from a model free source of external information. Under this paradigm, we develop the architecture of the Alexa Social Bot by proposing a novel procedure for information lookup and internalization via document embeddings in the regime of deep reinforcement learning with memory augmented metalearning. (\textbf{TODO EDIT THE SHIT OUT OF THIS.})
 \end{abstract}
 
 \section{Model}
-
-\begin{figure*}
-	\include{will}
-  \caption{This is a tiger.}
-\end{figure*}
-\begin{figure*}
-	\include{james}
-  \caption{This is a tiger.}
-\end{figure*}
+\begin{columns}
+    \begin{column}{0.5\textwidth}
+        \begin{figure*}
+        	\include{will}
+          \caption{DDPG architecture}
+          \end{figure*}
+      \end{column}}
+     \begin{column}{0.5\textwidth}
+        \begin{figure*}
+        	\includegraphics[scale=0.25]{jamesdiag}
+          \caption{System architecture}
+        \end{figure*}
+    \end{column}
+\end{columns}
 Formally, we model a conversation as an \emph{environment}, which is a Markov decision process, generally represented as a tuple $E=(\scripts, \scripta, \scriptr, T, r)$ where $\scripts$ is the statespace, $\scripta$ is the action space, $\scriptr$ is the reward space, and $T, r$ are the transition and reward functions respectively\footnote{For a high level overview of the MDP learnign set up, the reader is referred to \textbf{ TODO: insert reference}}. Given an environment, a (deterministic) agent is a map $\pi: \scripts \to \scripta$ which takes actions conditioned on state space. In the context of a \emph{conversational environment}, the state space is some featurized of the dialogue produced by the other party (the user) with whom Alexa communicates. Coorespondingly the action space is the dialogue that Alexa produces in response. As aforementioned, a conversationalist is rewarded under $r$ for maximizing engagement constrained to a minimal information theoretic throughput. Given the difficulty of defining such a function, we will learn $r$ based on actual conversation as depicted in Section 3; thus we suppose that $r$ is well defined.
 
 Depicted in Figure (\textbf{TODO}) we seperate the approximation of an optimal policy $\pi$ into three components: dialogue representation, internal knowledge representation, as mentioned information lookup.
