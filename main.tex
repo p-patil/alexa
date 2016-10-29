@@ -149,7 +149,6 @@ Machine Learning at Berkeley\\
 
 \begin{document}
 
-\maketitle
 
 \begin{abstract}
 In accordance with our vision, in this document, we will propose a radically different architectural approach to learning generative models of human-level conversation. The primary motivation behind the following architecture is that conversation can be modeled as a game in which two players attempt to maximize a mutuakl engangement reward under a minimum information theoretic constraint. In the framework of reinforcement learning, we can view the Social Bot as an agent, $\pi$, hereafter referred to as the conversationalist, whose environment is the conversation itself. An additional constraint on $\pi$ is that of one-shot learning, the ability to work with and engage details pertinent to the conversation, drawing from a model free source of external information. Under this paradigm, we develop the architecture of the Alexa Social Bot by proposing a novel procedure for information lookup and internalization via document embeddings in the regime of deep reinforcement learning with memory augmented metalearning. (\textbf{TODO EDIT THE SHIT OUT OF THIS.})
@@ -161,7 +160,10 @@ In accordance with our vision, in this document, we will propose a radically dif
 	\include{will}
   \caption{This is a tiger.}
 \end{figure*}
-
+\begin{figure*}
+	\include{james}
+  \caption{This is a tiger.}
+\end{figure*}
 Formally, we model a conversation as an \emph{environment}, which is a Markov decision process, generally represented as a tuple $E=(\scripts, \scripta, \scriptr, T, r)$ where $\scripts$ is the statespace, $\scripta$ is the action space, $\scriptr$ is the reward space, and $T, r$ are the transition and reward functions respectively\footnote{For a high level overview of the MDP learnign set up, the reader is referred to \textbf{ TODO: insert reference}}. Given an environment, a (deterministic) agent is a map $\pi: \scripts \to \scripta$ which takes actions conditioned on state space. In the context of a \emph{conversational environment}, the state space is some featurized of the dialogue produced by the other party (the user) with whom Alexa communicates. Coorespondingly the action space is the dialogue that Alexa produces in response. As aforementioned, a conversationalist is rewarded under $r$ for maximizing engagement constrained to a minimal information theoretic throughput. Given the difficulty of defining such a function, we will learn $r$ based on actual conversation as depicted in Section 3; thus we suppose that $r$ is well defined.
 
 Depicted in Figure (\textbf{TODO}) we seperate the approximation of an optimal policy $\pi$ into three components: dialogue representation, internal knowledge representation, as mentioned information lookup.
@@ -187,7 +189,7 @@ Requiring that $\pi$ only learn which class of documents are useful for respondi
 
 
 \section{Training}
-With the core architectural components of the model developed, we draw from a state of the art development in RL, inverse reinforcement learning\cite{ng2000algorithms}, to impart natural and expert level conversational skill on the Social Bot. 
+With the core architectural components of the model developed, we draw from a state of the art development in RL, inverse reinforcement learning\cite{ng2000algorithms}, to impart natural and expert level conversational skill on the Social Bot.
 
 The principle idea behind inverse reinforcement learning is that behavioral cloning is limited to a biased distribution of only expert examples; that is, if the social bot’s model is trained to exactly replicate a human level conversationalist's response to different dialogues, then its ability to extrapolate beyond that known set of dialogues is unstable due to the severe nonlinearity of the model itself. In answer to this, inverse reinforcement learning attempts to infer the reward function of the agent being cloned. Knowing the reward function which an expert policy maximizes across a variety of states allows that policy to be cloned in a robust and dynamical fashion independent of the particular states in which it has acted; the cloned policy learns not about the particular examples to which it is tuned, but about the general principles which govern the expert policy.
 
