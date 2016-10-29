@@ -158,9 +158,18 @@ In accordance with our vision, in this document, we will propose a radically dif
 \begin{figure}[ht]
 \vskip 0.2in
 \begin{center}
+\centerline{\include{will}}
+\caption{System architecture}
+\label{ddpg}
+\end{center}
+\vskip -0.2in
+\end{figure}
+\begin{figure}[ht]
+\vskip 0.2in
+\begin{center}
 \centerline{\includegraphics[width=\columnwidth]{jamesdiag}}
 \caption{System architecture}
-\label{icml-historical}
+\label{sysarch}
 \end{center}
 \vskip -0.2in
 \end{figure}
@@ -175,7 +184,7 @@ In accordance with our vision, in this document, we will propose a radically dif
 
 Formally, we model a conversation as an \emph{environment}, which is a Markov decision process, generally represented as a tuple $E=(\scripts, \scripta, \scriptr, T, r)$ where $\scripts$ is the statespace, $\scripta$ is the action space, $\scriptr$ is the reward space, and $T, r$ are the transition and reward functions respectively\footnote{For a high level overview of the MDP learnign set up, the reader is referred to \textbf{ TODO: insert reference}}. Given an environment, a (deterministic) agent is a map $\pi: \scripts \to \scripta$ which takes actions conditioned on state space. In the context of a \emph{conversational environment}, the state space is some featurized of the dialogue produced by the other party (the user) with whom Alexa communicates. Coorespondingly the action space is the dialogue that Alexa produces in response. As aforementioned, a conversationalist is rewarded under $r$ for maximizing engagement constrained to a minimal information theoretic throughput. Given the difficulty of defining such a function, we will learn $r$ based on actual conversation as depicted in Section 3; thus we suppose that $r$ is well defined.
 
-Depicted in Figure (\textbf{TODO}) we seperate the approximation of an optimal policy $\pi$ into three components: dialogue representation, internal knowledge representation, as mentioned information lookup.
+Depicted in Figure \ref{sysarch} we seperate the approximation of an optimal policy $\pi$ into three components: dialogue representation, internal knowledge representation, as mentioned information lookup.
 \begin{enumerate}
 \item Dialogue representation is an embedding $\phi: \mathfrak{T} \to \scripts = \mathbb{R}^n$ from dialogue text into some suitable vector representation of semantics conditioned on context. Respecting that this task is still an active area of research, we will model $\phi$ and its inverse by experimenting with a variety different approaches such as thought vectors \cite{NIPS2015_5950}, sparse distributed representations of syntax trees \cite{DBLP:journals/corr/YogatamaFDS14}, and others (\textbf{HELP WITH ENGLISH)}.
 
