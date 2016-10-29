@@ -159,7 +159,7 @@ In accordance with our vision, we will propose a radically different architectur
 % \begin{center}
 % \centerline{\include{will}}
 % \caption{Diagram of the DDPG \cite{DBLP:journals/corr/LillicrapHPHETS15}paradigm. $\mu$ is the actor network that takes gradient updates from the critic, $Q^\mu$.}
-% \label{ddpg}
+% \la`b'el{ddpg}
 % \end{center}
 % \end{figure}
 \begin{figure}[ht]
@@ -183,7 +183,7 @@ Formally, we model a conversation as an \emph{environment}, which is a Markov de
 Depicted in Figure \ref{sysarch} we separate the approximation of an optimal policy $ \pi $ into three components: dialogue representation, internal knowledge representation, and information lookup.
 
 \begin{enumerate}
-\item Dialogue representation is an embedding $ \phi: \mathfrak{T} \to \scripts = \mathbb{R}^n $ from dialogue text into some suitable vector representation of semantics conditioned on context. Respecting that this task is still an active area of research, we will model $ \phi $ and its inverse by experimenting with a variety of different approaches such as thought vectors \cite{NIPS2015_5950}, sparse distributed representations of syntax trees \cite{DBLP:journals/corr/YogatamaFDS14}, and others (\textbf{HELP WITH ENGLISH)}).
+\item Dialogue representation is an embedding $ \phi: \mathfrak{T} \to \scripts = \mathbb{R}^n $ from dialogue text into some suitable vector representation of semantics conditioned on context. Respecting that this task is still an active area of research, we will model $ \phi $ and its inverse by experimenting with a variety of different approaches such as thought vectors \cite{NIPS2015_5950} and sparse distributed representations of syntax trees \cite{DBLP:journals/corr/YogatamaFDS14}.
 
 \item Our requirement that $ \pi $ actively learn, manipulate, and act on an internal episodic knowledge representation of its current conversation, is analogous to the problem of one-shot learning. Therefore we approximate an optimal $ \pi $ using a deep differentiable neural computer (DNC)\cite{graves2016hybrid}\cite{DBLP:journals/corr/GravesWD14}, otherwise known as memory augmented network as motivated by the results of (\citeauthor{DBLP:journals/corr/SantoroBBWL16}, 2016).
 
@@ -215,27 +215,15 @@ To train parts $(1)$ and $(2)$ in our model, we take a variety of data sources c
 \begin{equation*}
     \hat{Q}(s_t, a_t) = \expect_{s_{t+1} \sim E}\left[\hat{r}(s_{t}, a_t) + \gamma \hat{Q}(s_{t+1}, \mu(s_{t+1}))\right]
 \end{equation*}
-In addition to learning the action-value function, as perscribed in our technical approach, we learn a critic network $\epsilon: \scripts \times \scripta \to \mathbb[R}$ in the style of Generative Adverserial Networks \cite{NIPS2014_5423} which estimates the engagement of the conversation as per the Mechanical Turk dataset. Accompanying $\epsilon$ is a prior on the density of engagement labels in state space, $P(\epsilon | s)$, which we use to derive the following update rule.
+In addition to learning the action-value function, as perscribed in our technical approach, we learn a critic network $\epsilon: \scripts \times \scripta \to \mathbb{R}$ in the style of Generative Adverserial Networks \cite{NIPS2014_5423} which estimates the engagement of the conversation as per the Mechanical Turk dataset. Accompanying $\epsilon$ is a prior on the density of engagement labels in state space, $P(\epsilon | s)$, which we use to derive the following update rule.
 
-As per the standard deterministic policy gradient \cite{icml2014c1_silver14} SILVER 14 DPG } regime, assume that $\scriptn$ is parameterized by $\theta$ and then maximize the engagement and reward of a conversation by following the gradient
+As per the standard deterministic policy gradient \cite{icml2014c1_silver14} regime, assume that $\scriptn$ is parameterized by $\theta$ and then maximize the engagement and reward of a conversation by following the gradient
 \begin{equation*}
 	\theta' \leftarrow \theta + \left( \nabla_a \hat{Q}(s, a)  + P(\epsilon | s)\nabla_a \epsilon \right)\nabla_\theta  \scriptn.
 \end{equation*}
 
-Lastly, to train information retrieval we use the Washington Post News Interview dataset which contains conversations and cooresponding news articles (documents in $\scriptd$). Holding constant a proportion of the parameters of $\theta$, we define a conversation about a particular document to have an environment = the interviewer, agent the interviewee. \textbf{TODO SOMEONE FINISH THIS PIECE}. Then we take  $\hat{Q}$ learned from inverse reinforcement learning and apply it to
-% We then take the conversation corpus
-% Conversation Corpus
-% News Interviews
-% Articles and corresponding videos by news anchors
-% Late Night Shows
-% Engagement
-% Label uniform sparse subset of some conversation data according to engagement, termination, depth
-% Train a “critic”/adverserial  in the flavor DDPG or DCGAN
-% Knowledge Retrieval
-% News Interviews:
-% Create another reinforcement learning regime where the actions are a document code, freezing the conversational portion of the network. Then perform a reverse lookup (using the nearest document in the embedded space) and feed that into the document read heads of the network.,
-% Again reward the agent for correctly satisfying the reward function that was inverted from the conversations. From `(1.b)
-% Conversation corpora
+Lastly, to train information lookup (3) we use the Washington Post News Interview dataset which contains conversations and cooresponding news articles (documents in $\scriptd$). Holding constant a proportion of the parameters of $\theta$, we reward the network for producing conversation which maximizes the reward function of the interviewer (inverse RL) after feeding the particular document in question through $\scriptn$ via $\phi.$ Limiting the dimensions in parameter space on which $\scriptn$ can learn requires the policy $\pi$ to internalize pertinent information in its meory $M_t.$ This regime is analygous to that depicted in (\citeauthor{DBLP:journals/corr/SantoroBBWL16}, 2016).
+
 
 
 \printbibliography
