@@ -201,8 +201,18 @@ The principle idea behind inverse reinforcement learning is that behavioral clon
 
 In the context of the social bot, learning to communicate by understanding the forces which govern human level conversation as opposed to mimicking the conversation itself has immediate and fundamental benefits which have not yet been utilized in natural language processing. Therefore we propose the following training regime for our model.
 
-The training paradigm takes a speaker's speech pattern and learns the reward function through inverse reinforcement learning. With the now extracted reward function, we can now train a critic network to estimate the Q value by the paradigm proposed in DDPG \textbf{CITE DDPG}.
+To train parts $(1)$ and $(2)$ in our model, we take a variety of data sources containing conversation as described in the technical approach document (Public Conversation Corpus, News Interview Corpus, Late Night Show Corpus) \textbf{TODO desribe these datasets in the technical approach} and fix a conversationalist and an environment; that is, in all instances of conversation we specify a party $\hat{\pi}$ whose maximal reward function, $\hat{r}$ is to be learned, and a party who for all intents and purposes acts as $E$. Then with respect to the inversed party, we learn the action-value function $\hat{Q}: \scripts \times \scripta \to \scriptr$ which estimates the expected future reward of $\hat{\pi}$ recursiveley
+\begin{equation*}
+    \hat{Q}(s_t, a_t) = \expect_{s_{t+1} \sim E}\left[\hat{r}(s_{t}, a_t) + \gamma \hat{Q}(s_{t+1}, \mu(s_{t+1}))\right]
+\end{equation*}
+In addition to learning the action-value function, as perscribed in our technical approach, we learn a critic network $\epsilon: \scripts \times \scripta \to \mathbb[R}$ in the style of GANS \textbf{TODO write out this acronym} which estimates the engagement of the conversation as per the Mechanical Turk dataset. Accompanying $\epsilon$ is a prior on the density of engagement labels in state space, $P(\epsilon | s)$, which we use to derive the following update rule. 
 
+As per the standard deterministic policy gradient \textbf{TODO CITE SILVER 14 DPG } regime, assume that $\scriptn$ is parameterized by $\theta$ and then maximize the engagement and reward of a conversation by following the gradient
+\begin{equation*}
+	\theta' \leftarrow \theta + \left( \nabla_a \hat{Q}(s, a)  + P(\epsilon | s)\nabla_a \epsilon \right)\nabla_\theta  \scriptn. 
+\end{equation*}
+
+Lastly, to train information retrieval we use the Washington Post News Interview dataset which contains conversations and cooresponding news articles (documents in $\scriptd$). Holding constant a proportion of the parameters of $\theta$, we define a conversation about a particular document to have an environment = the interviewer, agent the interviewee. \textbf{TODO SOMEONE FINISH THIS PIECE}. Then we take  $\hat{Q}$ learned from inverse reinforcement learning and apply it to
 % We then take the conversation corpus
 % Conversation Corpus
 % News Interviews
